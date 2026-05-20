@@ -3,32 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌸 UwU RPG Adventure 🌸</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;700&family=Azeret+Mono:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
+    <title>UwU RPG Game - Metin Edition</title>
     <style>
-        /* --- ZMIENNE KOLORÓW (AESTHETIC UWU) --- */
         :root {
-            --bg-color: #FFF5F7;
-            --pink-primary: #FFB7C5;
-            --pink-dark: #FF8DA1;
-            --pink-soft: #FFE3E8;
-            --text-color: #4A3E41;
-            --text-muted: #8A7A7D;
+            --bg-color: #0f0c1b;
+            --panel-bg: #1a1636;
+            --accent-pink: #ff79c6;
+            --accent-purple: #bd93f9;
+            --text-color: #f8f8f2;
+            --text-muted: #6272a4;
+            --border-color: #44475a;
+            --success-green: #50fa7b;
+            --danger-red: #ff5555;
         }
 
-        *, *::before, *::after {
+        * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none;
         }
 
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
-            font-family: 'Arimo', sans-serif;
-            margin: 0;
             padding: 20px;
             display: flex;
             flex-direction: column;
@@ -36,591 +35,565 @@
             min-height: 100vh;
         }
 
-        /* --- GŁÓWNE OKNO GRY --- */
-        .game-wrapper {
+        .game-container {
             width: 100%;
-            max-width: 600px;
-            background: white;
-            border: 2px solid var(--pink-primary);
-            border-radius: 24px;
-            padding: 30px;
-            box-shadow: 0 8px 24px rgba(255, 183, 197, 0.2);
-        }
-
-        h1 {
-            font-family: 'Azeret Mono', monospace;
-            font-size: 24px;
-            text-align: center;
-            margin-top: 0;
-            margin-bottom: 25px;
-            text-transform: uppercase;
-            letter-spacing: -1px;
-        }
-
-        /* --- STYLE GÓRNEGO PANELU BOHATERA --- */
-        .profile-header {
-            display: flex;
-            align-items: center;
+            max-width: 1000px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 20px;
-            background: var(--bg-color);
-            padding: 20px;
-            border-radius: 18px;
-            margin-bottom: 25px;
+            margin-top: 10px;
         }
 
-        .avatar-box {
-            font-size: 55px;
-            background: white;
-            padding: 10px;
-            border-radius: 50%;
-            border: 3px solid var(--pink-primary);
-            width: 90px;
-            height: 90px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        @media (max-width: 768px) {
+            .game-container {
+                grid-template-columns: 1fr;
+            }
         }
 
-        .profile-info {
-            flex-grow: 1;
-        }
-
-        .hero-name {
-            font-family: 'Azeret Mono', monospace;
-            font-size: 20px;
-            font-weight: bold;
-            margin: 0 0 5px 0;
-        }
-
-        .level-badge {
-            background: var(--pink-dark);
-            color: white;
-            padding: 3px 8px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: bold;
-            font-family: 'Azeret Mono', monospace;
-        }
-
-        .resource-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 12px;
-            font-size: 14px;
-        }
-
-        .xp-container {
-            width: 65%;
-        }
-
-        .xp-bar-bg {
-            background: white;
-            border: 1px solid var(--pink-primary);
-            border-radius: 8px;
-            height: 12px;
-            width: 100%;
-            overflow: hidden;
-            margin-top: 4px;
-        }
-
-        .xp-bar-fill {
-            background: var(--pink-dark);
-            width: 0%;
-            height: 100%;
-            transition: width 0.3s ease;
-        }
-
-        .gold-display {
-            font-family: 'Azeret Mono', monospace;
-            font-size: 16px;
-            font-weight: bold;
-            color: #D4AC0D;
-            background: white;
-            padding: 6px 12px;
-            border-radius: 10px;
-            border: 1px solid #F1C40F;
-        }
-
-        /* --- SYSTEM PRZEŁĄCZANIA EKRANÓW --- */
-        .game-screen {
-            display: none;
-            margin-bottom: 30px;
-        }
-
-        .game-screen.active-screen {
-            display: block;
-        }
-
-        .section-title {
-            font-family: 'Azeret Mono', monospace;
-            font-size: 16px;
-            border-bottom: 2px solid var(--pink-soft);
-            padding-bottom: 5px;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            color: var(--text-color);
-        }
-
-        /* --- STYLE ZAKŁADKI: POSTAĆ --- */
-        .stat-card {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--bg-color);
-            padding: 12px 18px;
-            border-radius: 14px;
+        header {
+            text-align: center;
             margin-bottom: 10px;
         }
 
-        .stat-label {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 16px;
-            font-weight: bold;
+        header h1 {
+            color: var(--accent-pink);
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px rgba(255, 121, 198, 0.5);
+            margin-bottom: 5px;
         }
 
-        .stat-label i {
-            color: var(--pink-dark);
-            width: 20px;
-            text-align: center;
+        header p {
+            color: var(--accent-purple);
+            font-style: italic;
         }
 
-        .stat-value {
-            font-family: 'Azeret Mono', monospace;
-            font-size: 18px;
-            font-weight: bold;
+        .panel {
+            background-color: var(--panel-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
         }
 
-        .btn-train {
-            background: var(--pink-dark);
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-family: 'Azeret Mono', monospace;
-            font-size: 12px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-left: 15px;
-        }
-
-        .btn-train:hover:not(:disabled) { background: #ff738c; }
-        .btn-train:disabled { background: #D5D8DC; cursor: not-allowed; }
-
-        .cost-text {
-            font-size: 11px;
-            color: var(--text-muted);
-            display: block;
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        /* --- STYLE ZAKŁADKI: KARCZMA --- */
-        .quest-item {
-            background: var(--bg-color);
-            border: 1px solid var(--pink-soft);
-            border-radius: 16px;
-            padding: 15px 20px;
+        .panel h2 {
+            color: var(--accent-purple);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 8px;
             margin-bottom: 15px;
+            font-size: 1.4rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+        }
+
+        /* Statystyki */
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .stat-box {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            border-radius: 6px;
+            border-left: 3px solid var(--accent-pink);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--text-color);
+            margin-top: 2px;
+        }
+
+        /* Paski post?pu */
+        .progress-container {
+            grid-column: span 2;
+            margin-top: 5px;
+        }
+
+        .progress-bar-outer {
+            width: 100%;
+            background-color: #282a36;
+            height: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            position: relative;
+            margin-top: 4px;
+        }
+
+        .progress-bar-inner {
+            height: 100%;
+            width: 100%;
+            transition: width 0.3s ease;
+        }
+
+        .hp-bar { background: linear-gradient(90deg, #ff5555, #ff79c6); }
+        .exp-bar { background: linear-gradient(90deg, #bd93f9, #ff79c6); }
+
+        .bar-text {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: bold;
+            line-height: 18px;
+            color: #fff;
+            text-shadow: 1px 1px 2px #000;
+        }
+
+        /* Logi / Konsola */
+        .log-panel {
+            grid-column: span 2;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .log-container {
+            background-color: #0b091a;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            height: 150px;
+            overflow-y: auto;
+            padding: 10px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+        }
+
+        .log-entry {
+            margin-bottom: 5px;
+            line-height: 1.4;
+        }
+        .log-system { color: var(--accent-purple); }
+        .log-player { color: var(--success-green); }
+        .log-enemy { color: var(--danger-red); }
+        .log-win { color: #f1fa8c; font-weight: bold; }
+
+        /* Przyciski i nawigacja */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .tab-btn {
+            background-color: #282a36;
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            flex: 1;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active, .tab-btn:hover {
+            background-color: var(--accent-pink);
+            color: var(--bg-color);
+            border-color: var(--accent-pink);
+            box-shadow: 0 0 8px rgba(255, 121, 198, 0.4);
+        }
+
+        .action-content {
+            display: none;
+            flex-direction: column;
             gap: 15px;
+            min-height: 220px;
         }
 
-        .quest-details h3 {
-            margin: 0 0 6px 0;
-            font-size: 16px;
+        .action-content.active {
+            display: flex;
         }
 
-        .quest-details p {
-            margin: 0;
-            font-size: 13px;
+        .btn {
+            background-color: var(--accent-purple);
+            color: var(--bg-color);
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .btn:hover:not(:disabled) {
+            opacity: 0.9;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(189, 147, 249, 0.4);
+        }
+
+        .btn:disabled {
+            background-color: #44475a;
+            color: #6272a4;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Sektory wrog��w */
+        .enemy-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .enemy-info h3 {
+            color: var(--accent-pink);
+            font-size: 1.1rem;
+        }
+
+        .enemy-info p {
+            font-size: 0.85rem;
             color: var(--text-muted);
         }
 
-        .btn-action {
-            background: var(--pink-dark);
-            color: white;
-            border: none;
-            padding: 10px 16px;
-            border-radius: 10px;
-            font-family: 'Azeret Mono', monospace;
-            font-weight: bold;
-            font-size: 13px;
-            cursor: pointer;
-        }
-
-        .btn-action:hover:not(:disabled) { background: #ff738c; }
-        .btn-action:disabled { background: #D5D8DC; cursor: not-allowed; }
-
-        .progress-box {
-            background: var(--pink-soft);
-            border: 1px solid var(--pink-primary);
-            border-radius: 16px;
-            padding: 20px;
+        .placeholder-text {
+            color: var(--text-muted);
             text-align: center;
-            display: none;
-        }
-
-        .progress-bar-bg {
-            background: white;
-            border-radius: 10px;
-            height: 20px;
-            width: 100%;
-            overflow: hidden;
-            border: 1px solid var(--pink-primary);
-            margin: 12px 0;
-        }
-
-        .progress-bar-fill {
-            background: var(--pink-dark);
-            height: 100%;
-            width: 0%;
-            transition: width 0.1s linear;
-        }
-
-        /* --- STYLE MENU NAWIGACYJNEGO --- */
-        .navigation-menu {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            border-top: 2px solid var(--pink-soft);
-            padding-top: 20px;
-        }
-
-        .nav-btn {
-            background: var(--bg-color);
-            border: 1px solid var(--pink-soft);
-            border-radius: 14px;
-            padding: 12px;
-            font-family: 'Azeret Mono', monospace;
-            font-size: 13px;
-            font-weight: bold;
-            color: var(--text-color);
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.2s ease;
-        }
-
-        .nav-btn:hover:not(.active) {
-            background: var(--pink-soft);
-        }
-
-        .nav-btn.active {
-            background: var(--pink-dark);
-            color: white;
-            border-color: var(--pink-dark);
-            cursor: default;
-        }
-
-        .nav-btn i {
-            font-size: 18px;
+            font-style: italic;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
 
-    <div class="game-wrapper">
-        <h1>UwU RPG Adventure 🌸</h1>
+    <header>
+        <h1>UwU RPG Game</h1>
+        <p>Zosta�� najsilniejszym wojownikiem w m1~ ?</p>
+    </header>
 
-        <div class="profile-header">
-            <div class="avatar-box">🦊</div>
-            <div class="profile-info">
-                <div style="margin-bottom: 5px;">
-                    <span class="hero-name">Reksiu</span>
-                    <span class="level-badge">Lvl <span id="hero-lvl">1</span></span>
+    <div class="game-container">
+        
+        <div class="panel">
+            <h2>Posta? <span id="display-name" style="color: var(--accent-pink)">Bohater</span></h2>
+            <div class="stat-grid">
+                <div class="stat-box">
+                    <div class="stat-label">Poziom</div>
+                    <div class="stat-value" id="stat-level">1</div>
                 </div>
-                
-                <div class="resource-row">
-                    <div class="xp-container">
-                        <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted);">
-                            <span>Doświadczenie</span>
-                            <span><span id="hero-xp">0</span>/<span id="hero-xp-needed">100</span></span>
-                        </div>
-                        <div class="xp-bar-bg">
-                            <div class="xp-bar-fill" id="xp-fill"></div>
-                        </div>
+                <div class="stat-box">
+                    <div class="stat-label">Z?oto</div>
+                    <div class="stat-value" id="stat-gold">0 Yang</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Witalno?? (WIT)</div>
+                    <div class="stat-value" id="stat-vit">10</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Si?a (SI?)</div>
+                    <div class="stat-value" id="stat-str">10</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Zr?czno?? (ZR?)</div>
+                    <div class="stat-value" id="stat-dex">10</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Inteligencja (INT)</div>
+                    <div class="stat-value" id="stat-int">10</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Atak</div>
+                    <div class="stat-value" id="stat-atk">10 - 15</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Obrona</div>
+                    <div class="stat-value" id="stat-def">5</div>
+                </div>
+
+                <div class="progress-container">
+                    <div class="stat-label">Punkty ?ycia (HP)</div>
+                    <div class="progress-bar-outer">
+                        <div class="bar-text" id="text-hp">100 / 100</div>
+                        <div class="progress-bar-inner hp-bar" id="bar-hp" style="width: 100%"></div>
                     </div>
-                    
-                    <div class="gold-display">
-                        <span id="hero-gold">100</span> 🪙
+                </div>
+
+                <div class="progress-container">
+                    <div class="stat-label">Do?wiadczenie (EXP)</div>
+                    <div class="progress-bar-outer">
+                        <div class="bar-text" id="text-exp">0 / 100</div>
+                        <div class="progress-bar-inner exp-bar" id="bar-exp" style="width: 0%"></div>
                     </div>
                 </div>
             </div>
         </div>
 
-
-        <div id="screen-character" class="game-screen active-screen">
-            <div class="section-title">Cechy Postaci</div>
-            
-            <div class="stat-card">
-                <div class="stat-label"><i class="fa-solid fa-heart"></i> Witalność</div>
-                <div><span class="stat-value" id="val-vit">10</span> <button class="btn-train" onclick="trainStat('vit')">+</button></div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label"><i class="fa-solid fa-dumbbell"></i> Siła</div>
-                <div><span class="stat-value" id="val-str">10</span> <button class="btn-train" onclick="trainStat('str')">+</button></div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label"><i class="fa-solid fa-bolt"></i> Zręczność</div>
-                <div><span class="stat-value" id="val-dex">10</span> <button class="btn-train" onclick="trainStat('dex')">+</button></div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label"><i class="fa-solid fa-brain"></i> Inteligencja</div>
-                <div><span class="stat-value" id="val-int">10</span> <button class="btn-train" onclick="trainStat('int')">+</button></div>
+        <div class="panel">
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('miasto')">Miasto</button>
+                <button class="tab-btn" onclick="switchTab('wyprawa')">Wyprawa</button>
+                <button class="tab-btn" onclick="switchTab('sklep')">Sklep</button>
+                <button class="tab-btn" onclick="switchTab('kowal')">Kowal</button>
             </div>
 
-            <span class="cost-text">Koszt treningu każdej statystyki: <strong id="training-cost">10</strong> złota 🪙</span>
-        </div>
+            <div id="tab-miasto" class="action-content active">
+                <p style="color: var(--text-muted)">Jeste? w bezpiecznej strefie. Odpocznij, aby uleczy? rany.</p>
+                <button class="btn" id="btn-rest" onclick="rest()">Odpocznij (Regeneracja HP)</button>
+            </div>
 
-
-        <div id="screen-tavern" class="game-screen">
-            <div class="section-title">Tablica Ogłoszeń</div>
-            
-            <div id="quests-board"></div>
-
-            <div class="progress-box" id="quest-progress-area">
-                <h3 id="active-quest-name" style="margin:0; font-size:15px;">Wykonywanie zadania...</h3>
-                <div class="progress-bar-bg">
-                    <div class="progress-bar-fill" id="quest-fill"></div>
+            <div id="tab-wyprawa" class="action-content">
+                <div class="enemy-card">
+                    <div class="enemy-info">
+                        <h3>Dziki Pies (Poz. 1)</h3>
+                        <p>HP: 40 | Drop: S?aby</p>
+                    </div>
+                    <button class="btn btn-fight" style="padding: 6px 12px; font-size: 0.9rem;" onclick="fight(0)">Atakuj</button>
                 </div>
-                <div id="quest-time-left" style="font-family:'Azeret Mono', monospace; font-size:13px;">Pozostało: 0s</div>
+                <div class="enemy-card">
+                    <div class="enemy-info">
+                        <h3>Wilk (Poz. 3)</h3>
+                        <p>HP: 90 | Drop: ?redni</p>
+                    </div>
+                    <button class="btn btn-fight" style="padding: 6px 12px; font-size: 0.9rem;" onclick="fight(1)">Atakuj</button>
+                </div>
+                <div class="enemy-card">
+                    <div class="enemy-info">
+                        <h3>Alfa Wilk (Poz. 5)</h3>
+                        <p>HP: 180 | Drop: Dobry</p>
+                    </div>
+                    <button class="btn btn-fight" style="padding: 6px 12px; font-size: 0.9rem;" onclick="fight(2)">Atakuj</button>
+                </div>
+            </div>
+
+            <div id="tab-sklep" class="action-content">
+                <p class="placeholder-text">Handlarka R��?no?ciami jeszcze nie roz?o?y?a swojego sklepu... ??</p>
+            </div>
+
+            <div id="tab-kowal" class="action-content">
+                <p class="placeholder-text">Kowal pije herbat? i nie chce teraz ulepsza? mieczy... ??</p>
             </div>
         </div>
 
-
-        <div id="screen-dungeons" class="game-screen">
-            <div class="section-title">Ponure Lochy 💀</div>
-            <div style="background: var(--bg-color); padding: 20px; border-radius: 16px; text-align: center;">
-                <div style="font-size: 50px; margin-bottom: 10px;">👹</div>
-                <h3 id="monster-name" style="margin: 0 0 10px 0;">Strażnik Portalu: Lagujący Goblin</h3>
-                <p style="margin: 5px 0; color: var(--text-muted);">Poziom potwora: <b id="monster-lvl">2</b></p>
-                <p style="margin: 5px 0;">Życie potwora: <b id="monster-hp">120/120</b> ❤️</p>
-                
-                <button class="btn-action" id="btn-fight" onclick="startDungeonFight()" style="margin-top: 15px; background: #C0392B;">
-                    Rozpocznij Walkę ⚔️
-                </button>
+        <div class="panel log-panel">
+            <h2>Dziennik zdarze��</h2>
+            <div class="log-container" id="log-container">
+                <div class="log-entry log-system">[System] Witaj w UwU RPG! Odpocznij w mie?cie, a potem ruszaj na podb��j M1!</div>
             </div>
         </div>
 
-
-        <div class="navigation-menu">
-            <button class="nav-btn active" id="btn-nav-char" onclick="switchScreen('character')">
-                <i class="fa-solid fa-user"></i>Postać
-            </button>
-            <button class="nav-btn" id="btn-nav-tavern" onclick="switchScreen('tavern')">
-                <i class="fa-solid fa-beer-mug-empty"></i>Karczma
-            </button>
-            <button class="nav-btn" id="btn-nav-dungeons" onclick="switchScreen('dungeons')">
-                <i class="fa-solid fa-skull"></i>Lochy
-            </button>
-        </div>
     </div>
 
-
     <script>
-        
-        // --- 1. MODEL STANU GRY (STATYSTYKI GRACZA) ---
-        let hero = {
-            lvl: 1, xp: 0, xpNeeded: 100, gold: 100, vit: 10, str: 10, dex: 10, int: 10, statCost: 10
+        // Dane gracza - Zaimplementowane statystyki z Metina
+        const player = {
+            level: 1,
+            hp: 100,
+            maxHp: 100,
+            exp: 0,
+            maxExp: 100,
+            gold: 0,
+            // Statystyki bazowe
+            vit: 10, // Zwi?ksza HP
+            str: 10, // Zwi?ksza maxAtk i minAtk
+            dex: 10, // Zwi?ksza obron? i lekko minAtk
+            int: 10, // Przyda si? p��?niej do umiej?tno?ci / many
+            // Staty pochodne
+            minAtk: 10,
+            maxAtk: 15,
+            def: 5
         };
 
-        // --- 2. BAZA NAZW DO LOSOWANIA MISJI ---
-        const questPool = [
-            "Polowanie na zmutowane myszy w kanałach",
-            "Obrona serwera przed atakiem hakerskim",
-            "Wyprawa po legendarny napój energetyczny",
-            "Konfiguracja sieci dla podejrzanego czarodzieja",
-            "Czyszczenie lochów z lagujących botów",
-            "Poszukiwanie zaginionej paczki z anime-merchem"
+        // Czasowe blokady (Cooldowny w milisekundach)
+        const cooldowns = {
+            restTime: 5 * 60 * 1000, // Odpoczynek co 5 minut
+            fightTime: 10 * 1000,    // Wyprawa co 10 sekund
+            nextRestAvailable: 0,
+            nextFightAvailable: 0
+        };
+
+        // Baza potwor��w
+        const enemies = [
+            { name: "Dziki Pies", level: 1, hp: 40, maxHp: 40, minAtk: 3, maxAtk: 6, expReward: 25, goldReward: 15 },
+            { name: "Wilk", level: 3, hp: 90, maxHp: 90, minAtk: 7, maxAtk: 12, expReward: 60, goldReward: 40 },
+            { name: "Alfa Wilk", level: 5, hp: 180, maxHp: 180, minAtk: 15, maxAtk: 22, expReward: 130, goldReward: 100 }
         ];
 
-        let activeQuest = null;
-        let questTimerLoop = null;
-
-
-        // --- 3. SYSTEM PRZEŁĄCZANIA ZAKŁADEK (ROUTER) ---
-        window.switchScreen = function(screenName) {
-            document.querySelectorAll('.game-screen').forEach(s => s.classList.remove('active-screen'));
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-
-            if (screenName === 'character') {
-                document.getElementById('screen-character').classList.add('active-screen');
-                document.getElementById('btn-nav-char').classList.add('active');
-            } else if (screenName === 'tavern') {
-                document.getElementById('screen-tavern').classList.add('active-screen');
-                document.getElementById('btn-nav-tavern').classList.add('active');
-            } else if (screenName === 'dungeons') {
-                document.getElementById('screen-dungeons').classList.add('active-screen');
-                document.getElementById('btn-nav-dungeons').classList.add('active');
-                setupDungeonMonster();
-            }
-        }
-
-
-        // --- 4. ODŚWIEŻANIE INTERFEJSU (RENDER UI) ---
-        function updateUI() {
-            document.getElementById('hero-lvl').textContent = hero.lvl;
-            document.getElementById('hero-xp').textContent = hero.xp;
-            document.getElementById('hero-xp-needed').textContent = hero.xpNeeded;
-            document.getElementById('hero-gold').textContent = hero.gold;
-            document.getElementById('training-cost').textContent = hero.statCost;
-
-            document.getElementById('val-vit').textContent = hero.vit;
-            document.getElementById('val-str').textContent = hero.str;
-            document.getElementById('val-dex').textContent = hero.dex;
-            document.getElementById('val-int').textContent = hero.int;
-
-            let xpPercent = (hero.xp / hero.xpNeeded) * 100;
-            document.getElementById('xp-fill').style.width = xpPercent + '%';
-
-            // Wyłączanie plusików treningu podczas misji lub gdy brak kasy
-            const trainButtons = document.querySelectorAll('.btn-train');
-            trainButtons.forEach(btn => {
-                btn.disabled = (hero.gold < hero.statCost) || (activeQuest !== null);
-            });
-
-            // Wyłączanie przycisków misji jeśli jakaś już trwa
-            const questButtons = document.querySelectorAll('.btn-action');
-            questButtons.forEach(btn => {
-                btn.disabled = (activeQuest !== null);
-            });
-        }
-
-
-        // --- 5. LOGIKA TRENINGU STATYSTYK ---
-        window.trainStat = function(statName) {
-            if (hero.gold >= hero.statCost && !activeQuest) {
-                hero.gold -= hero.statCost;
-                hero[statName]++;
-                hero.statCost = Math.floor(hero.statCost * 1.25);
-                updateUI();
-            }
-        }
-
-
-        // --- 6. LOGIKA KARCZMY (GENERATOR I TIMERY) ---
-        function generateQuestsBoard() {
-            const board = document.getElementById('quests-board');
-            board.innerHTML = "";
-
-            for (let i = 0; i < 3; i++) {
-                let title = questPool[Math.floor(Math.random() * questPool.length)];
-                let baseTime = (i + 1) * 4;
-                let duration = baseTime + Math.floor(hero.lvl * 1.5); 
-                let goldReward = Math.floor(duration * 1.8 * (1 + hero.lvl * 0.2));
-                let xpReward = Math.floor(duration * 2.5 * (1 + hero.lvl * 0.3));
-
-                let questCard = document.createElement('div');
-                questCard.className = 'quest-item';
-                questCard.innerHTML = `
-                    <div class="quest-details">
-                        <h3>${title}</h3>
-                        <p>Czas: <b>${duration}s</b> | Nagroda: <span style="color:#D4AC0D; font-weight:bold;">${goldReward}🪙</span> | <span style="color:#FF8DA1; font-weight:bold;">${xpReward}XP</span></p>
-                    </div>
-                    <button class="btn-action" onclick="startQuest('${title}', ${duration}, ${goldReward}, ${xpReward})">Wyrusz</button>
-                `;
-                board.appendChild(questCard);
-            }
-        }
-
-        window.startQuest = function(title, duration, gold, xp) {
-            if (activeQuest) return;
-
-            activeQuest = { title, duration, timeLeft: duration, gold, xp };
-            document.getElementById('quests-board').style.display = 'none';
-            document.getElementById('quest-progress-area').style.display = 'block';
-            document.getElementById('active-quest-name').textContent = `Przygoda: ${title}`;
-            updateUI();
-
-            questTimerLoop = setInterval(() => {
-                activeQuest.timeLeft--;
-                let donePercent = ((activeQuest.duration - activeQuest.timeLeft) / activeQuest.duration) * 100;
-                document.getElementById('quest-fill').style.width = donePercent + '%';
-                document.getElementById('quest-time-left').textContent = `Pozostało: ${activeQuest.timeLeft}s`;
-
-                if (activeQuest.timeLeft <= 0) {
-                    finishQuest();
-                }
-            }, 1000);
-        }
-
-        function finishQuest() {
-            clearInterval(questTimerLoop);
-            hero.gold += activeQuest.gold;
-            hero.xp += activeQuest.xp;
-
-            if (hero.xp >= hero.xpNeeded) {
-                hero.xp -= hero.xpNeeded;
-                hero.lvl++;
-                hero.xpNeeded = Math.floor(hero.xpNeeded * 1.35);
-                alert(`✨ Awans! Twój bohater osiągnął ${hero.lvl} poziom! ✨`);
-            }
-
-            activeQuest = null;
-            document.getElementById('quest-progress-area').style.display = 'none';
-            document.getElementById('quest-fill').style.width = '0%';
-            document.getElementById('quests-board').style.display = 'block';
-
-            generateQuestsBoard();
-            updateUI();
-        }
-
-
-        // --- 7. LOGIKA LOCHÓW (WALKI AUTOMATYCZNE) ---
-        let monster = { name: "Lagujący Goblin", lvl: 2, hp: 120, maxHp: 120, goldReward: 150, xpReward: 200 };
-
-        function setupDungeonMonster() {
-            monster.lvl = hero.lvl + 1;
-            monster.maxHp = 80 + (monster.lvl * 40);
-            monster.hp = monster.maxHp;
-            monster.goldReward = 100 + (monster.lvl * 50);
-            monster.xpReward = 150 + (monster.lvl * 50);
-
-            document.getElementById('monster-name').textContent = `Strażnik Portalu: ${monster.name}`;
-            document.getElementById('monster-lvl').textContent = monster.lvl;
-            document.getElementById('monster-hp').textContent = `${monster.hp}/${monster.maxHp}`;
-            document.getElementById('btn-fight').disabled = false;
-            document.getElementById('btn-fight').textContent = "Rozpocznij Walkę ⚔️";
-        }
-
-        window.startDungeonFight = function() {
-            document.getElementById('btn-fight').disabled = true;
+        // Prze??czanie zak?adek
+        function switchTab(tabId) {
+            document.querySelectorAll('.action-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
             
-            // System walki: porónujemy siłę bojową
-            let playerPower = hero.str * 2 + hero.dex * 1.5 + hero.int * 1;
-            let monsterPower = monster.lvl * 15;
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
 
-            if (playerPower > monsterPower) {
-                hero.gold += monster.goldReward;
-                hero.xp += monster.xpReward;
-                alert(`🎉 Zwycięstwo! Pokonałeś ${monster.name}!\nZdobywasz: ${monster.goldReward}🪙 i ${monster.xpReward}XP!`);
-                
-                if (hero.xp >= hero.xpNeeded) {
-                    hero.xp -= hero.xpNeeded;
-                    hero.lvl++;
-                    hero.xpNeeded = Math.floor(hero.xpNeeded * 1.35);
-                    alert(`✨ Awans! Osiągnąłeś ${hero.lvl} poziom! ✨`);
-                }
+        // Dodawanie wpis��w do log��w
+        function addLog(text, type = 'system') {
+            const container = document.getElementById('log-container');
+            const entry = document.createElement('div');
+            entry.className = `log-entry log-${type}`;
+            entry.innerText = text;
+            container.appendChild(entry);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // Przepisywanie statystyk na podstawie WIT, SI?, ZR?
+        function recalculateStats() {
+            player.maxHp = 100 + (player.vit * 12); // Ka?dy punkt WIT daje 12 HP
+            player.minAtk = 10 + Math.floor(player.str * 1.5) + Math.floor(player.dex * 0.5);
+            player.maxAtk = 15 + Math.floor(player.str * 2.2) + Math.floor(player.dex * 0.5);
+            player.def = 5 + Math.floor(player.dex * 0.8);
+        }
+
+        // Aktualizacja statystyk na ekranie
+        function updateUI() {
+            document.getElementById('stat-level').innerText = player.level;
+            document.getElementById('stat-gold').innerText = `${player.gold} Yang`;
+            document.getElementById('stat-vit').innerText = player.vit;
+            document.getElementById('stat-str').innerText = player.str;
+            document.getElementById('stat-dex').innerText = player.dex;
+            document.getElementById('stat-int').innerText = player.int;
+            document.getElementById('stat-atk').innerText = `${player.minAtk} - ${player.maxAtk}`;
+            document.getElementById('stat-def').innerText = player.def;
+            
+            // HP bar
+            const hpPercent = Math.max(0, (player.hp / player.maxHp) * 100);
+            document.getElementById('bar-hp').style.width = `${hpPercent}%`;
+            document.getElementById('text-hp').innerText = `${player.hp} / ${player.maxHp}`;
+            
+            // EXP bar
+            const expPercent = Math.min(100, (player.exp / player.maxExp) * 100);
+            document.getElementById('bar-exp').style.width = `${expPercent}%`;
+            document.getElementById('text-exp').innerText = `${player.exp} / ${player.maxExp}`;
+        }
+
+        // Licznik czasu (cooldowny) dla przycisk��w
+        function updateCooldowns() {
+            const now = Date.now();
+
+            // Przycisk Odpocznij
+            const restBtn = document.getElementById('btn-rest');
+            if (now < cooldowns.nextRestAvailable) {
+                const timeLeft = Math.ceil((cooldowns.nextRestAvailable - now) / 1000);
+                restBtn.innerText = `Odpocznij (${timeLeft}s)`;
+                restBtn.disabled = true;
             } else {
-                alert(`💀 Przegrana! ${monster.name} okazał się za silny. Potrenuj statystyki w zakładce Postać!`);
+                restBtn.innerText = "Odpocznij (Regeneracja HP)";
+                restBtn.disabled = false;
             }
 
-            setupDungeonMonster();
+            // Przyciski Walki
+            const fightButtons = document.querySelectorAll('.btn-fight');
+            if (now < cooldowns.nextFightAvailable) {
+                const timeLeft = Math.ceil((cooldowns.nextFightAvailable - now) / 1000);
+                fightButtons.forEach(btn => {
+                    btn.innerText = `Czekaj (${timeLeft}s)`;
+                    btn.disabled = true;
+                });
+            } else {
+                fightButtons.forEach((btn, index) => {
+                    btn.innerText = "Atakuj";
+                    btn.disabled = false;
+                });
+            }
+        }
+
+        // Odpalanie sprawdzania czasu co 1 sekund?
+        setInterval(updateCooldowns, 1000);
+
+        // Odpoczynek w mie?cie (Co 5 minut)
+        function rest() {
+            const now = Date.now();
+            if (now < cooldowns.nextRestAvailable) return;
+
+            if (player.hp === player.maxHp) {
+                addLog("[System] Tw��j bohater ma ju? pe?ne HP!", 'system');
+                return;
+            }
+
+            player.hp = player.maxHp;
+            cooldowns.nextRestAvailable = now + cooldowns.restTime; // Blokada na 5 minut
+            
+            recalculateStats();
+            updateUI();
+            updateCooldowns();
+            addLog("[Miasto] Odpocz??e? na rynku. HP w pe?ni zregenerowane! ?", 'player');
+        }
+
+        // Mechanika Walki (Z dodanym cooldownem 10s)
+        function fight(enemyId) {
+            const now = Date.now();
+            if (now < cooldowns.nextFightAvailable) return;
+
+            if (player.hp <= 0) {
+                addLog("[System] Pad?e?! Musisz odpocz?? w mie?cie.", 'enemy');
+                return;
+            }
+
+            // Ustawienie blokady czasowej na wyprawy
+            cooldowns.nextFightAvailable = now + cooldowns.fightTime;
+            updateCooldowns();
+
+            let enemy = { ...enemies[enemyId] };
+            addLog(`[Walka] Wybiegasz z miasta i atakujesz: ${enemy.name}!`, 'system');
+
+            while (player.hp > 0 && enemy.hp > 0) {
+                // Atak Gracza
+                let playerDmg = Math.floor(Math.random() * (player.maxAtk - player.minAtk + 1)) + player.minAtk;
+                enemy.hp -= playerDmg;
+                addLog(`Zadajesz ${playerDmg} obra?e�� dla ${enemy.name}.`, 'player');
+
+                if (enemy.hp <= 0) break;
+
+                // Atak Potwora
+                let enemyDmg = Math.floor(Math.random() * (enemy.maxAtk - enemy.minAtk + 1)) + enemy.minAtk;
+                let finalEnemyDmg = Math.max(1, enemyDmg - player.def);
+                player.hp -= finalEnemyDmg;
+                addLog(`${enemy.name} zadaje Ci ${finalEnemyDmg} obra?e��.`, 'enemy');
+            }
+
+            if (player.hp <= 0) {
+                player.hp = 0;
+                addLog(`[Pora?ka] Dziki zwierz Ci? poturbowa?... Wracasz ledwo ?ywy do miasta.`, 'enemy');
+            } else {
+                player.gold += enemy.goldReward;
+                player.exp += enemy.expReward;
+                addLog(`[Zwyci?stwo!] Pokona?e? ${enemy.name}! Zyskujesz ${enemy.expReward} EXP i ${enemy.goldReward} Yang.`, 'win');
+                
+                if (player.exp >= player.maxExp) {
+                    levelUp();
+                }
+            }
             updateUI();
         }
 
+        // Awansowanie na wy?szy poziom (Rozdawanie punkt��w statystyk automatycznie rodem z m1)
+        function levelUp() {
+            player.exp -= player.maxExp;
+            player.level++;
+            
+            // Przy awansie rosn? statystyki jak w Metinie!
+            player.vit += 3;
+            player.str += 3;
+            player.dex += 2;
+            player.int += 1;
 
-        // --- 8. INICJALIZACJA STARTOWA GRY ---
-        generateQuestsBoard();
+            player.maxExp = Math.floor(player.maxExp * 1.6);
+            
+            recalculateStats();
+            player.hp = player.maxHp; // Darmowy ulecz przy awansie
+            
+            addLog(`? LEVEL UP! Awansowa?e? na ${player.level} poziom! Twoja Si?a i Witalno?? wzros?y! ?`, 'win');
+        }
+
+        // Pierwsze uruchomienie kalkulacji przy wej?ciu na stron?
+        recalculateStats();
         updateUI();
-
     </script>
 </body>
 </html>
